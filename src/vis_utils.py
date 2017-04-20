@@ -77,6 +77,14 @@ def plot_confusion_matrix(
     plt.show()
 
 
+def plot_activation_maps(fig, activation_maps, num_rows, num_cols):
+
+    for i in range(activation_maps.shape[-1]):
+        ax = fig.add_subplot(num_rows, num_cols, i + 1)
+        ax.axis('off')
+        ax.imshow(activation_maps[0,:,:,i], cmap='gray')
+
+
 if __name__ == '__main__':
     matrix = np.random.randint(0, 9, (10, 10))
     labels = ['airplane','automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']

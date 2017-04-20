@@ -7,17 +7,17 @@ Install NVIDIA-docker according to [https://github.com/NVIDIA/nvidia-docker](htt
 ## Build
 
 <pre>
-docker build -t --build-arg http_proxy=&lt;http_proxy&gt; --build-arg https_proxy=&lt;https_proxy&gt; jcboyd/retreat-image .
+docker build -t --build-arg http_proxy=&lt;http_proxy&gt; --build-arg https_proxy=&lt;https_proxy&gt; jcboyd/deep-learning-workshop .
 </pre>
 
 ## Pull
 <pre>
-docker pull jcboyd/retreat-image
+docker pull jcboyd/deep-learning-workshop:[cpu|gpu]
 </pre>
 
 ## Run
 <pre>
-nvidia-docker run -ti -e http_proxy=&lt;http_proxy&gt; -e https_proxy=&lt;https_proxy&gt; -p 8888:8888 retreat-image
+nvidia-docker run -ti -e http_proxy=&lt;http_proxy&gt; -e https_proxy=&lt;https_proxy&gt; -p 8888:8888 deep-learning-workshop
 </pre>
 
 ## References
