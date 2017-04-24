@@ -1,4 +1,4 @@
-FROM gcr.io/tensorflow/tensorflow:1.0.1-gpu
+FROM gcr.io/tensorflow/tensorflow:1.0.1
 MAINTAINER Joseph Boyd <joseph.boyd@curie.fr>
 
 RUN pip install pandas

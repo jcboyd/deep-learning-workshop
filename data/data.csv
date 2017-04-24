@@ -1,14 +1,12 @@
 Shape,Colour,Label
 Arrow,Blue,Yes
-Circle,Green,Yes
-Circle,Purple,Yes
 Circle,Red,Yes
 Star,Yellow,Yes
 Triangle,Blue,Yes
 Triangle,Yellow,Yes
 Arrow,Orange,No
+Circle,Blue,No
+Circle,Green,No
+Circle,Orange,No
 Square,Orange,No
 Star,Green,No
-Star,Green,No
-Star,Yellow,No
-Triangle,Purple,No

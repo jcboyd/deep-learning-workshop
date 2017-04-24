@@ -15,6 +15,7 @@ def plot_array(fig, X, Y, num_classes=10, samples_per_class=7):
     for y in range(num_classes):
         idxs = np.flatnonzero(Y == y)
         idxs = np.random.choice(idxs, samples_per_class, replace=False)
+
         for i, idx in enumerate(idxs):
             plt_idx = i * num_classes + y + 1
             ax = fig.add_subplot(samples_per_class, num_classes, plt_idx)
