@@ -1,5 +1,9 @@
 # deep-learning-workshop
 
+Introductory workshop on deep learning "Deep learning on handwritten digits" given at Institut Curie u900 retreat April, 2017. Inspired and adapted from Stanford Vision course cs231n and official TensorFlow tutorial training LeNet on  MNIST ((https://hub.docker.com/r/tensorflow/tensorflow/)[https://hub.docker.com/r/tensorflow/tensorflow/]).
+
+Docker images (cpu/gpu) available from [https://hub.docker.com/r/jcboyd/deep-learning-workshop/](https://hub.docker.com/r/jcboyd/deep-learning-workshop/).
+
 ## NVIDIA-docker
 
 Install NVIDIA-docker according to [https://github.com/NVIDIA/nvidia-docker](https://github.com/NVIDIA/nvidia-docker)
@@ -7,7 +11,7 @@ Install NVIDIA-docker according to [https://github.com/NVIDIA/nvidia-docker](htt
 ## Build
 
 <pre>
-docker build -t --build-arg http_proxy=&lt;http_proxy&gt; --build-arg https_proxy=&lt;https_proxy&gt; jcboyd/deep-learning-workshop .
+docker build -t --build-arg http_proxy=&lt;http_proxy&gt; --build-arg https_proxy=&lt;https_proxy&gt; jcboyd/deep-learning-workshop:[cpu|gpu] .
 </pre>
 
 ## Pull
@@ -17,7 +21,7 @@ docker pull jcboyd/deep-learning-workshop:[cpu|gpu]
 
 ## Run
 <pre>
-nvidia-docker run -ti -e http_proxy=&lt;http_proxy&gt; -e https_proxy=&lt;https_proxy&gt; -p 8888:8888 deep-learning-workshop
+nvidia-docker run -ti -e http_proxy=&lt;http_proxy&gt; -e https_proxy=&lt;https_proxy&gt; -p 8888:8888 deep-learning-workshop:[cpu|gpu]
 </pre>
 
 ## References
