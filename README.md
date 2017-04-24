@@ -1,6 +1,6 @@
 # deep-learning-workshop
 
-Introductory workshop on deep learning "Deep learning on handwritten digits" given at Institut Curie u900 retreat April, 2017. Inspired and adapted from Stanford Vision course cs231n and official TensorFlow tutorial training LeNet on  MNIST ((https://hub.docker.com/r/tensorflow/tensorflow/)[https://hub.docker.com/r/tensorflow/tensorflow/]).
+Introductory workshop on deep learning "Deep learning on handwritten digits" given at Institut Curie u900 retreat April, 2017. Inspired and adapted from Stanford Vision course cs231n and official TensorFlow tutorial training LeNet on  MNIST ([https://hub.docker.com/r/tensorflow/tensorflow/](https://hub.docker.com/r/tensorflow/tensorflow/)).
 
 Docker images (cpu/gpu) available from [https://hub.docker.com/r/jcboyd/deep-learning-workshop/](https://hub.docker.com/r/jcboyd/deep-learning-workshop/).
 
