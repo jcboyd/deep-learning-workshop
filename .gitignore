@@ -1,5 +1,6 @@
 data/mnist-data
 src/*.pyc
+logs
 .ipynb_checkpoints/
 .DS_Store*
 doc/

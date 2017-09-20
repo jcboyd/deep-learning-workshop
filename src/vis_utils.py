@@ -35,7 +35,7 @@ def plot_weights(fig, weights):
         pmax = np.max(reshaped)
         
         normalised_first_row = ((reshaped - pmin) * (255 / (pmax - pmin))).round()
-        ax.set_title(class_name.capitalize())
+        # ax.set_title(class_name.capitalize())
         ax.axis('off')
 
         ax.imshow(normalised_first_row, cmap='gray')

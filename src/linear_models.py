@@ -43,7 +43,7 @@ class LinearClassifier:
         idx = np.random.choice(self.N, batch_size, replace=True)
         X_batch = self.Xtr[idx,:]
         y_batch = self.Ytr[idx]
-    
+
         dW = self.gradient(self.W, X_batch, y_batch, reg)       
         self.W -= learning_rate * dW
         return self.loss(X_batch, y_batch, self.W, reg)
