@@ -46,7 +46,7 @@ class ConvolutionalNeuralNetwork:
         self.conv1_biases = tf.Variable(tf.zeros([32]))
 
         self.conv2_weights = tf.Variable(
-            tf.truncated_normal([5, 5, 32, 64],
+            tf.truncated_normal([5, 5, 32, 64],  # truncates samples > 2std
                               stddev=0.1,
                               seed=self.SEED))
 
@@ -77,7 +77,7 @@ class ConvolutionalNeuralNetwork:
         self.relu1 = tf.nn.relu(tf.nn.bias_add(self.conv1, self.conv1_biases))
 
         self.pool1 = tf.nn.max_pool(self.relu1,
-                              ksize=[1, 2, 2, 1],
+                              ksize=[1, 2, 2, 1],  # batch size x w x h x c
                               strides=[1, 2, 2, 1],
                               padding='SAME')
 
@@ -100,14 +100,14 @@ class ConvolutionalNeuralNetwork:
         self.hidden1 = tf.nn.relu(
             tf.matmul(self.reshape, self.fc1_weights) + self.fc1_biases)
 
+        dropout = tf.nn.dropout(self.hidden1, self.keep_prob, seed=self.SEED)
+        self.logits = tf.matmul(dropout, self.fc2_weights) + self.fc2_biases
+
         print('Model architecture initialised')
 
     def init_training_graph(self):
-        dropout = tf.nn.dropout(self.hidden1, self.keep_prob, seed=self.SEED)
-        logits = tf.matmul(dropout, self.fc2_weights) + self.fc2_biases
-
         self.loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
-          logits=logits, labels=self.train_labels_node))
+          logits=self.logits, labels=self.train_labels_node))
 
         self.regularizers = (
             tf.nn.l2_loss(self.fc1_weights) + tf.nn.l2_loss(self.fc1_biases) +
@@ -117,34 +117,13 @@ class ConvolutionalNeuralNetwork:
 
         self.batch = tf.Variable(0)
 
-        self.train_prediction = tf.nn.softmax(logits)
+        self.train_prediction = tf.nn.softmax(self.logits)
 
         predictions = tf.matmul(self.hidden1, self.fc2_weights) + self.fc2_biases
         self.validation_prediction = tf.nn.softmax(predictions)
         self.test_prediction = tf.nn.softmax(predictions)
 
-        tf.global_variables_initializer().run()
-
         print('Computational graph initialised')
-
-    def getActivations(self, layer, stimuli):
-        units = self.sess.run(layer, feed_dict=
-            {self.input_node : stimuli, self.keep_prob : 1.0})
-        return units
-
-    def test_model(self, Xte):
-        logits = tf.matmul(self.hidden1, self.fc2_weights) + self.fc2_biases
-        predictions = np.argmax(
-            self.test_prediction.eval(
-                feed_dict={self.input_node : Xte}), axis=1).astype(np.int8)
-        return predictions
-
-    def error_rate(self, predictions, labels):
-        correct = np.sum(np.argmax(predictions, 1) == np.argmax(labels, 1))
-        total = predictions.shape[0]
-
-        error = 100 - (100 * float(correct) / float(total))
-        return error
 
     def train(self, Xtr, Ytr, Xval, Yval):
         self.NUM_LABELS = 10
@@ -158,8 +137,9 @@ class ConvolutionalNeuralNetwork:
             0.95,
             staircase=True)
 
-        self.optimizer = tf.train.MomentumOptimizer(self.learning_rate, 0.9).minimize(
-            self.loss, global_step=self.batch)
+        self.optimizer = tf.train.MomentumOptimizer(
+            self.learning_rate, 0.9).minimize(self.loss, global_step=self.batch)
+
         tf.global_variables_initializer().run()
 
         summary_writer = tf.summary.FileWriter('logs', graph=self.sess.graph)
@@ -189,3 +169,22 @@ class ConvolutionalNeuralNetwork:
                         self.validation_prediction.eval(
                             feed_dict={self.input_node : Xval}),
                         (np.arange(self.NUM_LABELS) == Yval[:, None]).astype(np.float32)))
+
+    def getActivations(self, layer, stimuli):
+        units = self.sess.run(layer, feed_dict=
+            {self.input_node : stimuli, self.keep_prob : 1.0})
+        return units
+
+    def test_model(self, Xte):
+        logits = tf.matmul(self.hidden1, self.fc2_weights) + self.fc2_biases
+        predictions = np.argmax(
+            self.test_prediction.eval(
+                feed_dict={self.input_node : Xte}), axis=1).astype(np.int8)
+        return predictions
+
+    def error_rate(self, predictions, labels):
+        correct = np.sum(np.argmax(predictions, 1) == np.argmax(labels, 1))
+        total = predictions.shape[0]
+
+        error = 100 - (100 * float(correct) / float(total))
+        return error
