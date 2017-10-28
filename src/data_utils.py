@@ -2,6 +2,8 @@ import os
 import numpy as np
 from six.moves.urllib.request import urlretrieve
 import gzip, binascii, struct
+from skimage.io import imread
+from sklearn.model_selection import train_test_split
 
 
 SOURCE_URL = 'http://yann.lecun.com/exdb/mnist/'
@@ -87,3 +89,25 @@ def extract_labels(filename, num_images, num_labels=10):
         labels = np.frombuffer(buf, dtype=np.uint8)
 
     return labels.astype(np.int8)
+
+
+def get_cell_data(ground_truth_folder='./data/cell-data', IMG_SIZE=28):
+    with open(os.path.join(ground_truth_folder, 'labels.txt')) as f:
+        label_array = map(lambda x: x.split('\t'), f.read().splitlines())
+    Y = np.array([int(elem[1]) for elem in label_array]) - 1
+
+    all_files = os.listdir(ground_truth_folder)
+    img_files = filter(lambda x: os.path.splitext(x)[1] == '.png', all_files)
+
+    N = len(img_files)
+    CHANNELS = 1
+
+    X = np.zeros((N, IMG_SIZE, IMG_SIZE, CHANNELS))
+
+    for i, img_name in enumerate(sorted(img_files)):
+        img = imread(os.path.join(ground_truth_folder, img_name))    
+        X[i, :, :, :] = img.reshape((IMG_SIZE, IMG_SIZE, 1))
+
+    X = X / float(255)  # convert to floating point [0, 1]
+
+    return train_test_split(X, Y, test_size=1000, random_state=42)

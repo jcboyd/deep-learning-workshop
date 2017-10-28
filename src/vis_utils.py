@@ -4,13 +4,13 @@ import matplotlib.pyplot as plt
 
 def plot_image(ax, x, y=None):
     if not y is None:
-        print 'Class: %d' % y
+        print 'Class: %s' % y
 
     ax.imshow(x, cmap='gray')
     ax.axis('off')
 
 
-def plot_array(fig, X, Y, num_classes=10, samples_per_class=7):
+def plot_array(fig, X, Y, num_classes, samples_per_class=7):
 
     for y in range(num_classes):
         idxs = np.flatnonzero(Y == y)
