@@ -129,7 +129,7 @@ class ConvolutionalNeuralNetwork:
 
         print('Computational graph initialised')
 
-    def sample_batch(self, Xtr, Ytr):
+    def sample_batch(self, Xtr, Ytr, augment=False):
         num_samples = self.BATCH_SIZE // self.NUM_LABELS
 
         idx = []
@@ -145,16 +145,19 @@ class ConvolutionalNeuralNetwork:
         batchX = Xtr[idx]
 
         # stochastic data augmentation
-        for i, img in enumerate(batchX):
-            img = img.reshape(self.IMG_SIZE, self.IMG_SIZE)  # reshape to image
-            img = np.rot90(img, k=np.random.choice(4))  # randomly rotate image
-            if np.random.rand() >= 0.5:
-                img = np.fliplr(img)  # randomly flip image
-            batchX[i] = img.reshape((self.IMG_SIZE, self.IMG_SIZE, 1))
+        if augment:
+            for i, img in enumerate(batchX):
+                # reshape to image
+                img = img.reshape(self.IMG_SIZE, self.IMG_SIZE)
+                # randomly rotate image
+                img = np.rot90(img, k=np.random.choice(4))
+                if np.random.rand() >= 0.5:
+                    img = np.fliplr(img)  # randomly flip image
+                batchX[i] = img.reshape((self.IMG_SIZE, self.IMG_SIZE, 1))
 
         return batchX, batchY
 
-    def train(self, Xtr, Ytr, Xval, Yval, max_iters=2000):
+    def train(self, Xtr, Ytr, Xval, Yval, max_iters=2000, augment=False):
         num_training = Xtr.shape[0]
 
         self.learning_rate = tf.train.exponential_decay(
@@ -174,7 +177,7 @@ class ConvolutionalNeuralNetwork:
         steps = max_iters
 
         for step in range(steps):
-            batch_data, batch_labels = self.sample_batch(Xtr, Ytr)
+            batch_data, batch_labels = self.sample_batch(Xtr, Ytr, augment)
             batch_labels = self.one_hot_encoding(batch_labels, self.NUM_LABELS)
 
             feed_dict = {self.input_node: batch_data,
