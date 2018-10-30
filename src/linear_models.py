@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import division
+
 import numpy as np
 
 
@@ -6,7 +9,7 @@ class LinearClassifier:
     def __init__(self, X, y):
         self.Xtr = X
         self.Ytr = y
-        
+
         self.N, self.D = self.Xtr.shape
         self.K = max(y) - min(y) + 1
 
@@ -29,15 +32,15 @@ class LinearClassifier:
             self.W -= learning_rate * dW
 
             if iteration % 100 == 0:
-                print 'Step %s of %s' % (iteration, max_iters)
+                print('Step %s of %s' % (iteration, max_iters))
                 loss = self.loss(X_batch, y_batch, self.W, reg)
 
-                print 'Mini-batch loss: %.05f ' % loss + \
-                    'Learning rate: %.05f' % learning_rate
+                print('Mini-batch loss: %.05f ' % loss + \
+                    'Learning rate: %.05f' % learning_rate)
 
                 predictions = [self.predict(Xval[i]) for i in range(len(Yval))]
-                print 'Validation error: %.04f' % (
-                    float(sum(Yval != predictions)) / len(Yval))
+                print('Validation error: %.04f' % (
+                    float(sum(Yval != predictions)) / len(Yval)))
 
     def train_iteration(self, reg, batch_size, learning_rate):
         idx = np.random.choice(self.N, batch_size, replace=True)

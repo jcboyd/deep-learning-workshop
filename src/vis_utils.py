@@ -1,16 +1,19 @@
+from __future__ import print_function
+from __future__ import division
+
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 def plot_image(ax, x, y=None):
     if not y is None:
-        print 'Class: %d' % y
+        print('Class: %s' % y)
 
     ax.imshow(x, cmap='gray')
     ax.axis('off')
 
 
-def plot_array(fig, X, Y, num_classes=10, samples_per_class=7):
+def plot_array(fig, X, Y, num_classes, samples_per_class=7):
 
     for y in range(num_classes):
         idxs = np.flatnonzero(Y == y)
@@ -23,9 +26,7 @@ def plot_array(fig, X, Y, num_classes=10, samples_per_class=7):
             ax.axis('off')
 
 
-def plot_weights(fig, weights):
-
-    classes = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+def plot_weights(fig, weights, classes):
 
     for i, class_name in enumerate(classes):
         ax = fig.add_subplot(2, 5, i + 1)
@@ -84,9 +85,3 @@ def plot_activation_maps(fig, activation_maps, num_rows, num_cols):
         ax = fig.add_subplot(num_rows, num_cols, i + 1)
         ax.axis('off')
         ax.imshow(activation_maps[0,:,:,i], cmap='gray')
-
-
-if __name__ == '__main__':
-    matrix = np.random.randint(0, 9, (10, 10))
-    labels = ['airplane','automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
-    plot_confusion_matrix(matrix, labels)
