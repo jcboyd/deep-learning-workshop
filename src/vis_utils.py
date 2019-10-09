@@ -22,7 +22,7 @@ def plot_array(fig, X, Y, num_classes, samples_per_class=7):
         for i, idx in enumerate(idxs):
             plt_idx = i * num_classes + y + 1
             ax = fig.add_subplot(samples_per_class, num_classes, plt_idx)
-            ax.imshow(X[idx][:,:,0], cmap='gray')
+            ax.imshow(X[idx], cmap='gray')
             ax.axis('off')
 
 
